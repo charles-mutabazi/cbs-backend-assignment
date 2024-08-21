@@ -1,24 +1,46 @@
 services:
   car_booking_api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    env_file:
+      - .env
+    build: .
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
-        - PORT=3000
-        - NODE_ENV=development
-        - DATABASE_URL=mysql://testuser:testuserpassword@mysql_db:3306/car_booking
+      PORT: 3000
+      NODE_ENV: development
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      postgres:
+        condition: service_healthy
     volumes:
       - ./src:/usr/src/app/src
 
-  mysql_db:
-    image: mysql
-    ports:
-      - "3306:3306"
+  postgres:
+    env_file:
+      - .env
+    image: postgres:latest
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: car_booking
-      MYSQL_USER: testuser
-      MYSQL_PASSWORD: testuserpassword
-      MYSQL_TCP_PORT: '3306'
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: car_booking_db
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d car_booking_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["npx", "prisma", "migrate", "dev"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    entrypoint: ["sh", "-c", "npx prisma migrate dev"]
