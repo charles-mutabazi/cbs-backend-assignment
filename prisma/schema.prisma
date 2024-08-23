@@ -15,10 +15,10 @@ datasource db {
 
 model User {
   id             Int       @id @default(autoincrement())
-  name           String
+  names          String
   email          String    @unique
   password       String
-  hierarchyLevel Int // Represents the seniority level of the employee
+  hierarchyLevel Int       @default(1) // Represents the seniority level of the employee
   bookings       Booking[]
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
@@ -60,9 +60,11 @@ enum BookingStatus {
 
 model Driver {
   id        Int       @id @default(autoincrement())
-  name      String
-  vehicle   Vehicle   @relation(fields: [vehicleId], references: [id])
-  vehicleId Int       @unique // Ensures a 1-1 relationship
+  names     String
+  email     String    @unique
+  password  String
+  vehicle   Vehicle?  @relation(fields: [vehicleId], references: [id])
+  vehicleId Int?      @unique // Ensures a 1-1 relationship
   bookings  Booking[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
