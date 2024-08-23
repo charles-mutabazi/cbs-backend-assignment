@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Prisma } from '@prisma/client';
-import * as bcrypt from 'bcryptjs';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import hashPassword from '../utils/hashPassword';
 
 @Controller('users')
 export class UsersController {
@@ -21,7 +21,7 @@ export class UsersController {
   async create(@Body() createUserDto: Prisma.UserCreateInput) {
     return this.usersService.create({
       ...createUserDto,
-      password: await this.hashPassword(createUserDto.password),
+      password: await hashPassword(createUserDto.password),
     });
   }
 
@@ -50,15 +50,5 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
-  }
-
-  @Post('login')
-  login(@Body() loginUserDto: { email: string; password: string }) {
-    return this.usersService.login(loginUserDto);
-  }
-
-  private async hashPassword(password: string): Promise<string> {
-    const saltRounds = 10;
-    return bcrypt.hash(password, saltRounds);
   }
 }
