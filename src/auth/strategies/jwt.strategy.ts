@@ -14,8 +14,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  // this is used even thought the IDE says it is not used
   async validate(payload: any) {
-    console.log('payload', payload);
     return payload;
   }
 }

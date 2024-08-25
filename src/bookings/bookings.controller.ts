@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
@@ -18,31 +19,49 @@ import { BookingRequestDto, CreateBookingDto } from './dto/create-booking.dto';
 export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() bookingRequestDto: BookingRequestDto) {
-    console.log("bookingRequestDto", bookingRequestDto);
-    // console.log("bookingRequestDto", new CreateBookingDto(bookingRequestDto));
-    return this.bookingsService.create(new CreateBookingDto(bookingRequestDto));
+  create(@Body() bookingRequestDto: BookingRequestDto, @Req() req: any) {
+
+    const data = {
+      ...bookingRequestDto,
+      userId: req.user.id,
+    }
+    return this.bookingsService.create(new CreateBookingDto(data), req.user.hierarchyLevel);
   }
 
-  @Get()
-  findAll() {
-    return this.bookingsService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.bookingsService.findAll();
+  // }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.bookingsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateBookingDto: Prisma.BookingUpdateInput,
-  ) {
-    return this.bookingsService.update(+id, updateBookingDto);
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  findBookingsByUserId(@Req() req: any) {
+    return this.bookingsService.getBookingsByUserId(
+      req.user.id,
+      req.user.hierarchyLevel !== undefined,
+    );
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  update(
+    @Param('id') bookingId: string,
+    @Body() updateBookingDto: Prisma.BookingUpdateInput,
+    @Req() req: any,
+  ) {
+    const userId = req.user.id; // Assuming the user ID is stored in req.user
+    return this.bookingsService.update(+userId, +bookingId, updateBookingDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.bookingsService.remove(+id);
