@@ -25,14 +25,14 @@ model User {
 }
 
 model Vehicle {
-  id                 Int       @id @default(autoincrement())
-  name               String
-  capacity           Int
-  availabilityStatus Boolean   @default(true)
-  bookings           Booking[]
-  driver             Driver?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
+  id           Int       @id @default(autoincrement())
+  name         String
+  licensePlate String
+  capacity     Int
+  bookings     Booking[]
+  driver       Driver?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model Booking {
