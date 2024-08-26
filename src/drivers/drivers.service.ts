@@ -24,6 +24,15 @@ export class DriversService {
     return this.databaseService.driver.findUnique({ where: { id } });
   }
 
+  async findDriverVehicle(driverId: number) {
+    const driver = await this.databaseService.driver.findUniqueOrThrow({
+      where: { id: driverId },
+      include: { vehicle: true },
+    });
+
+    return driver.vehicle;
+  }
+
   update(id: number, updateDriverDto: Prisma.DriverUpdateInput) {
     return this.databaseService.driver.update({
       where: { id },

@@ -60,10 +60,9 @@ export class BookingsService {
 
   async getBookingsByUserId(currentUserId: number, isEmployee: boolean) {
     const bookings = await this.databaseService.booking.findMany({
-      where: {
-        driverId: !isEmployee ? currentUserId : undefined,
-        userId: isEmployee   ? currentUserId : undefined,
-      },
+      where: isEmployee
+        ? { userId: currentUserId }
+        : { driverId: currentUserId },
       include: {
         user: true,
         vehicle: true,

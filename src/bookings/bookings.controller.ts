@@ -34,21 +34,16 @@ export class BookingsController {
   }
 
   @Get()
-  findAll() {
-    return this.bookingsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bookingsService.findOne(+id);
-  }
-
-  @Get()
   findBookingsByUserId(@Req() req: any) {
     return this.bookingsService.getBookingsByUserId(
       req.user.id,
       req.user.hierarchyLevel !== undefined,
     );
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.bookingsService.findOne(+id);
   }
 
   @Patch(':id')

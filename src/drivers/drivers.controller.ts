@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   Patch,
-  Post, UseGuards,
+  Post, Req, UseGuards,
 } from '@nestjs/common';
 import { DriversService } from './drivers.service';
 import { Prisma } from '@prisma/client';
@@ -28,6 +28,12 @@ export class DriversController {
   @Get()
   findAll() {
     return this.driversService.findAll();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('myVehicle')
+  findDriverVehicle(@Req() req: any) {
+    return this.driversService.findDriverVehicle(req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
