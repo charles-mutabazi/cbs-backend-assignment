@@ -41,17 +41,17 @@ export class VehiclesService {
         },
       },
       include: {
-        driver: true
-      }
+        driver: true,
+      },
     });
 
-    return vehicles.map(vehicle => ({
+    return vehicles.map((vehicle) => ({
       id: vehicle.id,
       name: vehicle.name,
       licensePlate: vehicle.licensePlate,
       driverNames: vehicle.driver?.names ?? null,
       driverId: vehicle.driver?.id ?? null,
       capacity: vehicle.capacity,
-    }))
+    }));
   }
 }

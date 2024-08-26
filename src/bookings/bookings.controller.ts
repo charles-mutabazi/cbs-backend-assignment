@@ -13,35 +13,36 @@ import { BookingsService } from './bookings.service';
 import { Prisma } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { BookingRequestDto, CreateBookingDto } from './dto/create-booking.dto';
+import { Throttle } from '@nestjs/throttler';
 
 @UseGuards(JwtAuthGuard)
 @Controller('bookings')
 export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { limit: 3, ttl: 60_000 } }) // 3 requests per minute to avoid abuse
   @Post()
   create(@Body() bookingRequestDto: BookingRequestDto, @Req() req: any) {
-
     const data = {
       ...bookingRequestDto,
       userId: req.user.id,
-    }
-    return this.bookingsService.create(new CreateBookingDto(data), req.user.hierarchyLevel);
+    };
+    return this.bookingsService.create(
+      new CreateBookingDto(data),
+      req.user.hierarchyLevel,
+    );
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.bookingsService.findAll();
-  // }
+  @Get()
+  findAll() {
+    return this.bookingsService.findAll();
+  }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.bookingsService.findOne(+id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   findBookingsByUserId(@Req() req: any) {
     return this.bookingsService.getBookingsByUserId(
@@ -50,7 +51,6 @@ export class BookingsController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
     @Param('id') bookingId: string,
@@ -61,7 +61,6 @@ export class BookingsController {
     return this.bookingsService.update(+userId, +bookingId, updateBookingDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.bookingsService.remove(+id);
