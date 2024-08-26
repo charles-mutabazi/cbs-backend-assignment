@@ -20,3 +20,7 @@ export interface VehicleRequestDto {
   driverId: number
   capacity: number
 }
+
+export interface SlotDateTimeReq {
+  slotDateTime: Date
+}

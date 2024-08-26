@@ -30,4 +30,28 @@ export class VehiclesService {
   async remove(id: number) {
     return this.databaseService.vehicle.delete({ where: { id } });
   }
+
+  async findAvailableVehiclesBasedOnSlots(slotDateTime: Date) {
+    const vehicles = await this.databaseService.vehicle.findMany({
+      where: {
+        bookings: {
+          none: {
+            slotDateTime: slotDateTime,
+          },
+        },
+      },
+      include: {
+        driver: true
+      }
+    });
+
+    return vehicles.map(vehicle => ({
+      id: vehicle.id,
+      name: vehicle.name,
+      licensePlate: vehicle.licensePlate,
+      driverNames: vehicle.driver?.names ?? null,
+      driverId: vehicle.driver?.id ?? null,
+      capacity: vehicle.capacity,
+    }))
+  }
 }

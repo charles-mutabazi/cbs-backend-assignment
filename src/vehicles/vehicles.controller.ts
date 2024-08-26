@@ -5,12 +5,15 @@ import {
   Get,
   Param,
   Patch,
-  Post,
+  Post, UseGuards,
 } from '@nestjs/common';
 import { VehiclesService } from './vehicles.service';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { Prisma } from '@prisma/client';
+import { SlotDateTimeReq } from './dto/create-vehicle.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('vehicles')
 export class VehiclesController {
   constructor(private readonly vehiclesService: VehiclesService) {}
@@ -38,5 +41,12 @@ export class VehiclesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.vehiclesService.remove(+id);
+  }
+
+  @Post('available')
+  findAvailableVehiclesBasedOnSlots(@Body() req: SlotDateTimeReq) {
+    return this.vehiclesService.findAvailableVehiclesBasedOnSlots(
+      req.slotDateTime,
+    );
   }
 }
