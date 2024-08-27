@@ -37,10 +37,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["npx", "prisma", "migrate", "dev"]
+    command: ["npx", "prisma", "db", "push", "--accept-data-loss"]
     depends_on:
       postgres:
         condition: service_healthy
     environment:
       DATABASE_URL: ${DATABASE_URL}
-    entrypoint: ["sh", "-c", "npx prisma migrate dev"]
+    entrypoint: ["sh", "-c", "npx prisma db push"]

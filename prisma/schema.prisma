@@ -27,7 +27,7 @@ model User {
 model Vehicle {
   id           Int       @id @default(autoincrement())
   name         String
-  licensePlate String
+  licensePlate String    @unique
   capacity     Int
   bookings     Booking[]
   driver       Driver?

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { BookingStatus, Prisma } from '@prisma/client';
 import { DatabaseService } from '../database/database.service';
 
 @Injectable()
@@ -37,6 +37,9 @@ export class VehiclesService {
         bookings: {
           none: {
             slotDateTime: slotDateTime,
+            status: {
+              notIn: [BookingStatus.CANCELED],
+            },
           },
         },
       },
