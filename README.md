@@ -10,10 +10,8 @@ This repository contains the backend API service for the Company XYZ Transport B
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Running the Application](#running-the-application)
-  - [Running Tests](#running-tests)
-- [Project Structure](#project-structure)
-- [API Documentation](#api-documentation)
-- [Docker Deployment](#docker-deployment)
+    - [Locally without Docker](#1-locally-without-docker)
+    - [Using Docker](#2-using-docker)
 
 ## Features
 
@@ -28,7 +26,7 @@ This repository contains the backend API service for the Company XYZ Transport B
 - **Framework**: [NestJS](https://nestjs.com/)
 - **Language**: TypeScript
 - **Database**: PostgreSQL (with Prisma ORM)
-- **Authentication**: JWT (JSON Web Tokens)
+- **Authentication**: JWT (JSON Web Tokens and Passport.js)
 - **Containerization**: Docker & Docker Compose
 - **Testing**: Jest & Supertest
 
