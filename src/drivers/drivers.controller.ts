@@ -5,7 +5,9 @@ import {
   Get,
   Param,
   Patch,
-  Post, Req, UseGuards,
+  Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { DriversService } from './drivers.service';
 import { Prisma } from '@prisma/client';
@@ -14,7 +16,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
 @Controller('drivers')
 export class DriversController {
-  constructor(private readonly driversService: DriversService, ) {}
+  constructor(private readonly driversService: DriversService) {}
 
   @Post()
   async create(@Body() createDriverDto: Prisma.DriverCreateInput) {
