@@ -60,6 +60,13 @@ $ npm install
 
 Create a .env file in the root directory and populate it with necessary environment variables. An example .env.example is provided
 
+.env file example (used also in docker-compose.yml):
+```bash
+POSTGRES_PASSWORD="admin_password"
+DATABASE_URL="postgres://root:${POSTGRES_PASSWORD}@postgres:5432/car_booking_db"
+JWT_SECRET_KEY="secret_key"
+```
+
 ```bash
 # development
 $ npm run start
