@@ -9,9 +9,7 @@ This repository contains the backend API service for the Company XYZ Transport B
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-  - [Running the Application](#running-the-application)
-    - [Locally without Docker](#1-locally-without-docker)
-    - [Using Docker](#2-using-docker)
+- [Running the frontend](#running-the-frontend)
 
 ## Features
 
@@ -35,12 +33,9 @@ This repository contains the backend API service for the Company XYZ Transport B
 ### Prerequisites
 
 Ensure you have the following installed:
-
-- **Node.js**: [Download Node.js](https://nodejs.org/)
 - **Docker**: [Download Docker](https://www.docker.com/get-started)
-- **Docker Compose**: Included with Docker Desktop
 
-### Installation
+## Installation
 
 1. **Clone the repository:**
 
@@ -48,15 +43,8 @@ Ensure you have the following installed:
   git clone https://github.com/charles-mutabazi/transport-booking-backend.git
   cd transport-booking-backend
 ```
-## Project setup
 
-```bash
-$ npm install
-```
-
-## Compile and run the project
-
-### 1. Locally without Docker
+2. **Compile and run the project**
 
 Create a .env file in the root directory and populate it with necessary environment variables. An example .env.example is provided
 
@@ -66,18 +54,36 @@ POSTGRES_PASSWORD="admin_password"
 DATABASE_URL="postgres://root:${POSTGRES_PASSWORD}@postgres:5432/car_booking_db"
 JWT_SECRET_KEY="secret_key"
 ```
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-```
-
-### 2. Using Docker
+Then...
 
 ```bash
 $ docker compose up --build
 ```
 The API will be accessible at http://localhost:3000, and the PostgreSQL database will be running inside a Docker container.
+
+### Testing the API
+Use Postman or any other API testing tool to test the API endpoints using http://localhost:3000/api as the base URL.
+Note: The API requires authentication for most endpoints. You can obtain an access token by 
+
+1. Create a user account by sending a POST request to http://localhost:3000/users with the following payload:
+```javascript
+{
+  "names": string,
+  "email": string,
+  "password": string
+}
+```
+
+2. Log in to obtain an access token by sending a POST request to http://localhost:3000/auth/login with the following payload:
+```javascript
+{
+  "email": string,
+  "password": string
+}
+```
+
+3. Use the access token in the Authorization header of subsequent requests as a Bearer token.
+
+## Running the frontend
+To run the frontend, clone the [frontend repo](https://github.com/charles-mutabazi/cbs-backend-assignment) and follow the instructions in the README.md file
+
