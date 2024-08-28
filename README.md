@@ -1,6 +1,6 @@
-## Company XYZ Transport Booking System - Backend API
+## Company XYZ Car Booking System - Backend API
 
-This repository contains the backend API service for the Company XYZ Transport Booking System. The service is built using [NestJS](https://nestjs.com/), a progressive Node.js framework, and is containerized and deployed using Docker Compose.
+This repository contains the backend API service for the Company XYZ Car Booking System. The service is built using [NestJS](https://nestjs.com/), a progressive Node.js framework, and is containerized and deployed using Docker Compose.
 
 ## Table of Contents
 
@@ -14,7 +14,7 @@ This repository contains the backend API service for the Company XYZ Transport B
 ## Features
 
 - **User Management**: Create and manage user accounts.
-- **Booking Management**: Handle transport booking, confirmation, and cancellation.
+- **Booking Management**: Handle car booking, confirmation, and cancellation.
 - **Driver Management**: Create and manage driver accounts.
 - **Analytics**: Collect and provide booking-related metrics.
 - **RESTful APIs**: Expose services through RESTful endpoints.
@@ -40,8 +40,8 @@ Ensure you have the following installed:
 1. **Clone the repository:**
 
 ```bash
-  git clone https://github.com/charles-mutabazi/transport-booking-backend.git
-  cd transport-booking-backend
+  git clone https://github.com/charles-mutabazi/car-booking-backend.git
+  cd car-booking-backend
 ```
 
 2. **Compile and run the project**
